@@ -56,6 +56,17 @@ After the experiment runs, produce a short report (200-500 words) covering:
 - Do not silently swap a failed experiment for a different one. If the experiment failed, report the failure with the actual error.
 - Do not soften negative results. A failed hypothesis is a useful outcome; report it as such.
 
+### Real data only
+
+You may use synthetic, mock, or randomly-generated data only when the orchestrator explicitly authorizes it for the current experiment (typical case: a unit test or a code-path sanity check). Outside that explicit authorization, the use of synthetic data is forbidden. This rule has no exceptions:
+
+- Do not generate fake measurements to make a script "work end-to-end."
+- Do not substitute random tensors for real model state when the real state is on disk and you do not feel like loading it.
+- Do not stub a baseline number that was supposed to be read from a log.
+- Do not run a sweep on toy data and report it as if it had been run on real data.
+
+If the real data is unavailable, missing, expensive to load, or behind a permissions wall, stop and report the blockage to the orchestrator. Do not paper over it with synthetic substitutes. A blocked experiment is recoverable; a contaminated result is not.
+
 ## Safety
 
 - Never modify a checkpoint, dataset, or measurement directory belonging to another running experiment.
@@ -66,13 +77,14 @@ After the experiment runs, produce a short report (200-500 words) covering:
 ## Workflow discipline
 
 1. Read the spec. If it is unclear, ask the orchestrator. Do not guess.
-2. Read the relevant existing code and conventions.
-3. Sketch the implementation in your head. State your plan in one paragraph before writing files.
-4. Write the code. Add a sanity test.
-5. Run the sanity test. If it fails, fix and retry. Do not proceed until the sanity test passes.
-6. Run the experiment.
-7. Collect outputs. Verify they are non-empty and contain plausible values.
-8. Report.
+2. Read the Environment section. If a skill or playbook is listed there, **invoke that skill before doing anything else**. Skills encode project-specific rules (cluster access patterns, conda environment, dataset paths, dataset prep, log conventions) that you cannot infer from the codebase.
+3. Read the relevant existing code and conventions in the project.
+4. Sketch the implementation in your head. State your plan in one paragraph before writing files.
+5. Write the code. Add a sanity test.
+6. Run the sanity test. If it fails, fix and retry. Do not proceed until the sanity test passes.
+7. Run the experiment.
+8. Collect outputs. Verify they are non-empty and contain plausible values.
+9. Report.
 
 If the experiment is long-running (more than ~10 minutes of wall-clock), report the launch + ETA back to the orchestrator and let it monitor, instead of blocking inside your own context.
 
@@ -105,8 +117,10 @@ Describe in plain text:
 - Where logs land
 - Where datasets and checkpoints live
 - Any project-specific environment variables
-- Skills or playbooks the experimenter should consult before launching
-  (e.g., a project-specific orchestration skill or workflow document)
+- Skills or playbooks the experimenter MUST invoke before launching
+  (e.g., a project-specific orchestration skill or workflow document).
+  The experimenter is required to invoke listed skills, not merely read
+  about them.
 
 </Environment>
 ```
