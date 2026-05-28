@@ -20,8 +20,19 @@ After symlinking, the agents become available as `subagent_type` values for the 
 | Agent | Role | Tools | Model |
 |---|---|---|---|
 | `scholar` | Critical thinker. Audits arguments, finds gaps, proposes structural revisions. | Read, Grep, Glob, WebSearch, WebFetch | opus |
+| `experimenter` | Implements and runs experiments. Writes code, validates with a sanity test, runs in the configured environment, reports honestly. Requires an Environment section. | Read, Write, Edit, Bash, Glob, Grep | opus |
 
 (More agents will be added as we build them out.)
+
+## Per-project configuration
+
+Some agents require project-specific context (compute setup, conventions, file layouts). These agents have an `Environment` placeholder section in their system prompt. The user fills this in for each project, either manually or with Claude Code's help. See `experimenter.md` for the convention.
+
+A natural setup flow:
+1. Add a new project.
+2. Ask Claude Code: "Help me set up the Environment section for the experimenter agent for this project."
+3. Claude reads the project's existing scripts / skills / SSH config and drafts the Environment section.
+4. You review and commit a `projects/<project-name>/environment.md` (or paste the Environment block into the agent invocation prompt).
 
 ## Design principles
 
