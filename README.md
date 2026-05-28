@@ -21,6 +21,7 @@ After symlinking, the agents become available as `subagent_type` values for the 
 |---|---|---|---|
 | `scholar` | Critical thinker. Audits arguments, finds gaps, proposes structural revisions. | Read, Grep, Glob, WebSearch, WebFetch | opus |
 | `experimenter` | Implements and runs experiments. Writes code, validates with a sanity test, runs in the configured environment, reports honestly. Requires an Environment section. | Read, Write, Edit, Bash, Glob, Grep | opus |
+| `writer` | Drafts paper sections from a finalized outline plus measurement data. Applies the ARS academic-writing methodology. Outputs LaTeX ready to paste. Requires the ARS plugin installed. | Read, Write, Edit, Glob, Grep | opus |
 
 (More agents will be added as we build them out.)
 
