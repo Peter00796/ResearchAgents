@@ -21,9 +21,31 @@ After symlinking, the agents become available as `subagent_type` values for the 
 |---|---|---|---|
 | `scholar` | Critical thinker. Audits arguments, finds gaps, proposes structural revisions. | Read, Grep, Glob, WebSearch, WebFetch | opus |
 | `experimenter` | Implements and runs experiments. Writes code, validates with a sanity test, runs in the configured environment, reports honestly. Requires an Environment section. | Read, Write, Edit, Bash, Glob, Grep | opus |
-| `writer` | Drafts paper sections from a finalized outline plus measurement data. Applies the ARS academic-writing methodology. Outputs LaTeX ready to paste. Requires the ARS plugin installed. | Read, Write, Edit, Glob, Grep | opus |
 
 (More agents will be added as we build them out.)
+
+## Outsourced to ARS
+
+Some research roles are already covered by the [Academic Research Skills (ARS)](https://github.com/Imbad0202/academic-research-skills) plugin at high quality. We do not re-implement these; we call ARS directly.
+
+| Role | ARS entry point | When to use |
+|---|---|---|
+| Draft a paper section | `/ars-revision` (existing draft → revised) or `/ars-plan` (Socratic outline) | Whenever a section needs to be written or substantially rewritten. |
+| Write an abstract | `/ars-abstract` | Bilingual abstract + keywords. |
+| Draft outline only | `/ars-outline` | Detailed outline + evidence map. |
+| Citation check | `/ars-citation-check` | Audit citation correctness and format. |
+| Peer-review simulation | `/ars-reviewer` | Simulated multi-perspective peer-review panel. |
+| Literature review | `/ars-lit-review` | Annotated bibliography in paper format. |
+| AI disclosure statement | `/ars-disclosure` | Venue-specific AI-usage statement. |
+| Full research-to-publication pipeline | `/ars-full` | Research → write → review → revise → finalize. |
+
+The orchestrator invokes these slash commands directly. The agents in this repo cover what ARS does not: critical thinking on partial work, experiment execution, visualization, fact-checking, and project-specific roles.
+
+Install ARS:
+```
+/plugin marketplace add Imbad0202/academic-research-skills
+/plugin install academic-research-skills
+```
 
 ## Per-project configuration
 
